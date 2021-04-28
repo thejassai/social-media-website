@@ -1,0 +1,57 @@
+<%- include("templates/header") %>
+<div class="searchResults">
+    <h3>You Searched for : <span id="sVal"><%= sVal %></span></h3>
+    <div class="sResults"></div>
+    
+</div>
+<%- include("templates/footer") %>
+
+<script>
+    var oUser = null;
+    function searchBar(){
+        var xhr = new XMLHttpRequest();
+        var sVal = document.querySelector("#sVal").innerHTML;
+        console.log(sVal);
+        xhr.open("POST","/search",true);
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                data = response.data;
+                var html = "";
+                data.forEach(element => {
+                    oUser = element;
+                    html+="<div class='searchItem'>";
+                        html+="<img src='http://localhost:3000/"+element.displayPic+"' alt=''>";
+                        html+="<div class='sUname'><a href=";
+                            if(user.username==element.username){
+                                html+='/profile';
+                            }
+                            else{
+                                html+='"user/'+element.username+'"';
+                            }
+                            html+=">"+element.username+"</a></div>";
+                            html+='<div class="addFrReq">';
+                                if(element.username!=user.username) html+=isFriend();
+                            html+='</div>';
+                    html+="</div>";
+                });
+                document.querySelector(".sResults").innerHTML = html;
+                //document.querySelector("#addFriend").classList.add("addFrReq");
+            }
+        }
+
+        var formData = new FormData();
+        formData.append("srchVal", sVal);
+        //console.log(formData);
+        xhr.send(formData);
+
+    };
+    
+    function onLoadFuncs(){
+        getUser();
+        searchBar();
+    };
+
+    window.onload = onLoadFuncs;
+</script>

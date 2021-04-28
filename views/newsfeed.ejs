@@ -1,0 +1,122 @@
+<%- include("templates/header") %>
+
+<div class="create_post">
+    <form action="" name="postForm" method="POST" onsubmit="createPost(this)" enctype="multipart/form-data">
+        <div>
+            <textarea name="postText" id="" cols="30" rows="5" placeholder="Type something to post..."></textarea>
+            <div>
+                <img id="prevImage" src="" alt="">
+                <video id="prevVIdeo" src="" controls></video>
+            </div>
+        </div>
+        <div>
+            <ul class="attachments">
+                <li>
+                    <label for="postImage"><i class="fa fa-image"></i></label>
+                    <input type="file" name="postImage" id="postImage" accept="image/*" onchange="previewImage(this)">
+                </li>
+                <li>
+                    <label for="postVideo"><i class="fa fa-video-camera"></i></label>
+                    <input type="file" name="postVideo" id="postVideo" accept="video/*" onchange="previewVideo(this)">
+                </li>
+                <li>
+                    <input type="submit" name="" id="" value="Post">
+                </li>
+            </ul>
+            
+        </div>
+    </form>
+</div>
+<!-- <a onclick="likePost('mrciermv')">click</a> -->
+<div class="nPosts">
+    
+</div>
+<!-- <form name="formm" action="" enctype="multipart/form-data" onsubmit="test(this)">
+    <input type="file" name="image" accept="image/*">
+    <input id="butt" name="butt" type="submit">
+</form> -->
+
+<%- include("templates/footer") %>
+<script>
+    function previewImage(image){
+        var file = image.files;
+        //console.log(file);
+        if(file.length>0){
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(event){
+                //console.log(event.target.result);
+                document.querySelector("#prevImage").style.display = "inline";
+                document.querySelector("#prevImage").src = event.target.result;
+            }
+
+            fileReader.readAsDataURL(file[0]);
+        }
+    }
+
+    function previewVideo(video){
+        var file = video.files;
+        //console.log(file);
+        if(file.length>0){
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(event){
+                document.querySelector("#prevVideo").style.display = "inline";
+                document.querySelector("#prevVideo").src = event.target.result;
+            }
+
+            fileReader.readAsDataURL(file[0]);
+        }
+    }
+
+
+    
+    function getPosts(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getPosts",true);
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                console.log(response.data);
+                if(response.status == 'success'){
+                    var postBody = document.querySelector(".nPosts");
+                    displayPosts(postBody, response.data);
+                }
+            }
+        }
+
+        xhr.send();
+    };
+
+    function createPost(form) {
+        //console.log(form.postText);
+        //console.log(form.image.path);
+        //alert(form.postText.value);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/createPost",true);
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                if(response.status == 'success'){
+                    alert("post successful. Message: "+response.message);
+                }
+                else{
+                    alert(response.message);
+                }
+            }
+        }
+
+        var formData = new FormData(form);
+        formData.append("accessToken", localStorage.getItem("accessToken"));
+        //formData.append("postText",form.postText.value);
+        xhr.send(formData);
+    }
+    function onLoadFuncs(){
+        getUser();
+        getPosts();
+    }
+    window.onload = onLoadFuncs;
+</script>
+

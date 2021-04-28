@@ -1,0 +1,72 @@
+<%- include("templates/header") %>
+<div class="coverPic">
+</div>
+<div class="profBody">
+
+    
+    <div class="profLeftSide">
+        <div class="uDetails">
+            <img class="dPic" src="">
+            <div class="uInfo">
+                <div id="ouName"><%= oUser %></div>
+            </div>
+            <div class="cisFriend">
+                <button id="addFriend" onclick="addFriendReq()">Add Friend</button>
+            </div>
+            
+        </div>
+    </div>
+    <div class="myPosts">
+    <h1>Posts</h1>
+    <div class="posts"></div>
+    </div>
+</div>
+<%- include("templates/footer") %>
+<script>
+    window.oUser = null;
+    
+    function getOPosts(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getMyPosts",true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState ==4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                var postBody = document.querySelector(".posts");
+                displayPosts(postBody, response.data);
+            }
+        }
+        var formData = new FormData();
+        
+        formData.append("uName", oUser.username);
+        console.log(formData);
+        xhr.send(formData);
+    }
+    function getOData(){
+        var xhr =  new XMLHttpRequest();
+        xhr.open("POST","/getOtUserData",true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState ==4 && this.status ==200){
+                var response = JSON.parse(this.responseText);
+                window.oUser = response.userData;
+                console.log(oUser);
+                document.querySelector(".dPic").src="http://localhost:3000/"+oUser.displayPic;
+                document.querySelector(".cisFriend").innerHTML = isFriend();
+                getOPosts();
+            }
+        }
+        var otUname = document.querySelector("#ouName").innerHTML;
+        var formData = new FormData();
+        formData.append("uName", otUname);
+        xhr.send(formData);
+    }
+
+    var isOProfile = true;
+    function onLoadFuncs(){
+        getUser();
+
+    }
+    window.onload = onLoadFuncs;
+</script>
+
+
+

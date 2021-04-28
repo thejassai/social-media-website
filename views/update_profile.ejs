@@ -1,0 +1,94 @@
+<%- include ("templates/header") %>
+
+
+
+<div>
+    
+
+    <form class="persDetails" onsubmit="updateProfile(this);">
+        <h1>
+            Personal Details
+        </h1>
+        <!-- <div class="dPic">
+            <img src="" alt="">
+        </div> -->
+        <img class="dPic" src="" alt="">
+        <br>
+        <input name="disPic" type="file" accept="image/*" onchange="previewImage(this)">
+        <br><br>
+        <label>Name: </label>
+        <input type="text" required class="name" name="name" />
+        <br><br>
+        <label>Email: </label>
+        <input type="text" class="email" name="email" />
+        <br><br>
+        <label>Mobile Number: </label>
+        <input type="text" class="mobno" name="mobno" />
+        <br><br>
+        <button type="submit" name="submit">
+            <span>Save</span>
+        </button>
+    </form>
+
+</div>
+
+
+<%- include ("templates/footer") %>
+
+<script>
+    function previewImage(image){
+        var file = image.files;
+        console.log(file);
+        if(file.length>0){
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(event){
+                document.querySelector(".dPic").src = event.target.result;
+            }
+
+            fileReader.readAsDataURL(file[0]);
+        }
+    }
+
+    function updateProfile(form) {
+
+        var ajax = new XMLHttpRequest();
+        ajax.open("POST", "/updateProfile", true);
+
+        ajax.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                form.submit.innerHTML = "<span>Save</span>";
+
+                var response = JSON.parse(this.responseText);
+
+                alert(response.message);
+            }
+        };
+
+        var formData = new FormData(form);
+        formData.append("accessToken", localStorage.getItem("accessToken"));
+        ajax.send(formData);
+    }
+    
+    function setDetails(){
+        document.querySelector(".dPic").src="http://localhost:3000/"+user.displayPic;
+        if(typeof user.name!="undefined")
+        {
+            document.querySelector("input[name='name']").value=user.name;
+        }
+        if(typeof user.name!="undefined")
+        {
+            document.querySelector("input[name='email']").value=user.email;
+        }
+        if(typeof user.name!="undefined")
+        {
+            document.querySelector("input[name='mobno']").value=user.mobno;
+        }
+    }
+    isEditProf = true;
+    function onloadFuncs(){
+        getUser();
+    }
+    window.onload = onloadFuncs;
+</script>

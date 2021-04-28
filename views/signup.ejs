@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>Social Network</title>
+        <link rel="stylesheet" href="/public/css/main.css">
+    </head>
+    <body>
+        <nav>
+            <div class ="logo">spaceBook</div>
+        </nav>
+        <div class="auth_div">
+            <h3>Signup</h3>
+            <form onsubmit="signUp(this);">
+                <div>
+                    <label for="username">Username: </label>
+                <input type="text" name="username" id="uname">
+                </div>
+                <div>
+                    <label for="password">Password: </label>
+                <input type="password" name="password" id="pword">
+                </div>
+                <div >
+                    <label >Full Name: </label>
+                    <input type="text" required name="name" />
+                    
+                </div>       
+                <div >
+                    <label >Email: </label>
+                    <input type="email" required name="email" />
+                    
+                </div>
+                <div >
+                    <label >Mobile Number: </label>
+                    <input type="mobno" required name="mobno" />
+                    
+                </div>  
+                <div >
+                    <label >Gender: </label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="gender" value="Male" checked />
+                            <i class="check-box"></i> Male
+                        </label>
+                    </div>
+
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="gender" value="Female" />
+                            <i class="check-box"></i> Female
+                        </label>
+                    </div>
+                </div>            
+                <div>
+                    <input type="submit" name="signup_btn" id="signup_btn" value="Signup">
+                    <input type="button" name="login_btn" id="login_btn" value="Login">
+                </div>
+            </form>
+        </div>
+
+        <script>
+            function signUp(form){
+                //alert("hello");
+                form.signup_btn.setAttribute("disabled","disabled");
+                form.signup_btn.innerHTML = "<span>Loading ....</span>";
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST","/signup",true);
+
+                xhr.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status ==200){
+                        form.signup_btn.removeAttribute("disabled");
+                        form.signup_btn.innerHTML="<span>Signedup</span>";
+
+                        var response = JSON.parse(this.responseText);
+                        alert(response.message);
+
+                        if(response.status == "success"){
+                            window.location.href = "login";
+                        }
+                    }
+                };
+
+                xhr.send(new FormData(form));
+            }
+
+            document.getElementById("login_btn").addEventListener("click",function(){
+                window.location.href = "/login";
+            });
+            
+        </script>
+    </body>
+</html>

@@ -1,0 +1,312 @@
+body{
+    margin: 0;
+    background-color: rgb(235, 254, 255);
+}
+nav{
+    padding: 25px 0;
+    background-color: aquamarine;
+    /* text-align: center; */
+    position:sticky;
+    top: 0;
+    z-index: 2;
+}
+nav div{
+    display: inline-block;
+}
+/* .navMenu{
+    display: inline-block;
+width: 100%;
+} */
+.navOptions{
+    position:absolute;
+    right: 50px;
+}
+.navOptions div{
+    margin: 0 20px;
+}
+.logo{
+    font-size: 25px;
+    display: inline-block;
+    margin:0 50px;
+}
+.auth_div{
+    text-align: center;
+    border: 1px solid black;
+    width: min(450px,50%);
+    max-width: 700px;
+    margin: 50px auto;
+}
+.auth_div div{
+    margin: 15px;
+    
+}
+.coverPic{
+    height: 200px;
+    background-color: blue;
+}
+.dPic{
+    /* height: 150px; */
+    background-color: cornflowerblue;
+    width: 150px;
+    margin: 0 auto 10px;
+    border-radius: 100%;
+    /* position: relative;
+    margin-top: -75px; */
+}
+/* .dPic img{
+    width: 100%;
+
+} */
+.profBody{
+    padding: 15px 25px;
+}
+.profLeftSide{
+    width: max(25%, 300px);
+    max-width: 450px;
+    position: sticky;
+    float: left;
+    left: 50px;
+    top: 150px;
+    /* border: 1px solid black; */
+
+}
+.uDetails{
+    /* width: min(25%, 300px);
+    max-width: 450px; */
+    /* width: 85%;
+    max-width: 450px; */
+    margin: auto;
+    text-align: center;
+    /* margin: 20px 0 20px 50px; */
+    border: 1px solid black;
+    padding: 20px;
+    /* position: sticky; */
+    /*float: left; */
+    /* left: 50px;
+    top: 150px; */
+    /* display: inline-block; */
+
+}
+.conns{
+    font-size: 20px;
+    font-weight: 600;
+}
+.conn{
+    display: inline;
+}
+.frDiv{
+    margin:20px 0;
+    /* width: min(25%, 300px);
+    max-width: 450px; */
+    border: 1px solid black;
+    padding: 20px;
+
+}
+.conRes{
+    margin-top: 10px;
+}
+.cF{
+    display: none;
+}
+.conOpt{
+    float: right;
+}
+.frItem{
+    display: inline-block;
+    margin: 0 1%;
+}
+.frItem img{
+    width: 90px;
+}
+.create_post{
+    width: 50%;
+    margin: 20px auto;
+    text-align: center;
+}
+.posts, .nPosts{
+    /* width: 50%; */
+    min-width: 450px;
+    max-width: 630px;
+    /* margin: auto; */
+}
+.nPosts{
+    width: 50%;
+    margin: auto;
+}
+.post{
+    border: 1px solid lightgrey;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 5px;
+}
+.post:hover{
+    border: 1px solid gray;
+    cursor: pointer;
+}
+.myPosts{
+    /* text-align: center; */
+    padding-left: 20px;
+    /* min-width: 50%; */
+    max-width: 670px;
+    margin-left: max(32%, 360px);
+    /* margin-right: 0; */
+}
+/* .myPosts h1{
+    text-align: center;
+} */
+
+.pUName{
+    display: inline-block;
+    margin: 0 10px;
+}
+.pTime{
+    display: inline-block;
+    margin: 0 10px;
+}
+.pDetails, .pBody{
+    padding: 10px;
+
+}
+
+.pBody{
+    font-size: 2em;
+}
+.postMedia img{
+    max-width: 100%;
+}
+.postMedia video{
+    max-width: 100%;
+    z-index: -2;
+}
+
+.edProPic{
+    text-align: center;
+    position: relative;
+    top: 80%;
+}
+.attachments li{
+    display: inline-block;
+    margin: 0 15px;
+}
+.attachments input[type="file"]{
+display: none;
+}
+#prevImage{
+    margin: 15px 0;
+    width: 300px;
+    display: none;
+}
+#prevVideo{
+    margin: 15px 0;
+    width: 300px;
+    display: none;
+}
+.postOptions{
+    font-size: 0.7em;
+}
+.postOptions ul{
+    margin: 10px 0;
+    padding: 0;
+}
+.postOptions ul li{
+    list-style-type: none;
+    margin-left: 20px;
+    display: inline-block;
+}
+.postOptions ul li i{
+    color: gray;
+}
+.like{
+    color: forestgreen !important;
+}
+.postOptions a{
+    text-decoration: none;
+    color: black;
+}
+
+.persDetails{
+    width: 40%;
+    margin: 20px auto 0;
+    border: 1px solid black;
+    padding: 20px;
+    text-align: center;
+
+}
+
+.pInteractions{
+    display: none;
+    font-size: 0.8em;
+}
+
+.pInterac{
+    text-align: center;
+}
+
+.pIntBody{
+    font-size: 0.7em;
+    margin-left: 15px;
+}
+
+hr{
+    height: 1px;
+    background-color: lightgrey;
+    border: none;
+}
+
+.searchResults{
+    width: max(480px,min(50%,650px));
+    margin: auto;
+}
+.searchItem{
+    border: 1px solid lightgrey;
+    padding: 5px;
+    margin: 10px 0;
+}
+.searchItem img{
+    width: 100px;
+    background-color: limegreen;
+
+}
+
+.searchItem .sUname{
+    display: inline-block;
+    position: relative;
+    bottom: 55px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-left: 15px;
+}
+
+.searchItem .addFrReq{
+    float: right;
+    margin-top: 35px;
+}
+
+.comDiv{
+    background-color: #F5F5F5;
+    border-radius: 5px;
+    margin: 2px;
+    font-size: 0.95em;
+}
+.cBody{
+    margin: 3px;
+}
+.comDiv ul{
+    display: inline;
+    padding: 0;
+}
+.comDiv li{
+    list-style-type: none;
+}
+.cUname{
+    font-weight: bold;
+}
+.cCom{
+    font-size: 1.15em;
+}
+.cOptions a:hover{
+    text-decoration: underline;
+}
+.comDiv .pIntBody{
+    font-size: 16px;
+}

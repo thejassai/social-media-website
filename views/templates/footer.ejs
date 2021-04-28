@@ -1,0 +1,373 @@
+
+
+<script>
+    window.user = null;
+    var iOsocket = io("http://localhost:3000");
+    //console.log(iOsocket);
+
+    function getUser(){
+        if(localStorage.getItem("accessToken")){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST","/getUserInfo",true);
+
+            xhr.onreadystatechange = function(){
+                if(this.readyState == 4 && this.status == 200){
+                    var resp = JSON.parse(this.responseText);
+
+                    if(resp.status = "success"){
+                        window.user = resp.userData;
+                        console.log(window.user);
+                        console.log("working");
+                        if(typeof isProfile!=="undefined" && isProfile){
+                           getData();
+                        }
+                        if(typeof isOProfile!=="undefined" && isOProfile){
+                            getOData();
+                        }
+                        if(typeof isEditProf !== "undefined" && isEditProf){
+                            setDetails();
+                        }
+                    } else{
+                        localStorage.removeItem("accessToken");
+                    }
+                    profileNav();
+                }
+            };
+
+                var formData = new FormData();
+                formData.append("accessToken", localStorage.getItem("accessToken"));
+                xhr.send(formData);
+            } else{
+                profileNav();
+            }
+    }
+
+    function profileNav(){
+        var html = "";
+        if(localStorage.getItem("accessToken")){
+            html+='<div><form><input id="searchBar" name="searchBar" type="text" onkeypress="return searchResKey()" /><input  type="button" onclick="searchRes()"" value="search"></form></div>';
+            html+='<div class="navOptions">';
+            html+='<div><a href="/">Home</a></div>';
+            html+='<div><a href="/profile">Profile</a></div>';
+            html+='<div><a href="/logout" onclick="logOut()">Logout</a></div>';
+
+            html+='</div>';
+
+        }
+        else{
+            html+='<div class="navOptions">';
+            html+='<div><a href="/login">Login</a></div>';
+            html+='<div><a href="/signup">Signup</a></div>';
+            html+='</div>';
+
+        }
+
+        document.querySelector(".navMenu").innerHTML = html;
+    }
+
+    function searchResKey(){
+        if(event.keyCode == 13){
+            searchRes();
+            return false;
+        }
+    }
+    function searchRes(){
+        // var xhr = new XMLHttpRequest();
+        // xhr.open("/searchBar/")
+        // /alert(form.searchBar.value);
+        window.location.href = "/search/"+document.querySelector("#searchBar").value;
+    }
+
+    function logOut(){
+        localStorage.removeItem("accessToken");
+    }
+
+    function likePost(c,id){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/likePost", true);
+        var liked = false;
+        var x = c.parentElement;
+        if(x.querySelector("i").classList.contains("like")){
+            liked = true;
+        }
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+
+                var resp = JSON.parse(this.responseText);
+                if(resp.likes!=undefined){
+                    x.querySelector("#noLikes").innerHTML="&nbsp;"+resp.likes.length;
+                }
+                else{
+                    x.querySelector("#noLikes").innerHTML="&nbsp;0";
+
+                }
+                if(liked){
+                    x.querySelector("i").classList.remove("like");
+                }
+                else{
+                    x.querySelector("i").classList.add("like");
+                }
+                //console.log(resp.likes.length);
+            }
+        }
+
+        var formData = new FormData();
+        formData.append("postId",id);
+        formData.append("userId",user._id);
+        formData.append("liked",liked);
+        xhr.send(formData);
+    }
+
+    function getLikedUsers(c, pId){
+        var pBod = c.closest(".pBody");
+        var pInt = pBod.querySelector(".pInteractions");
+        var pInter = pBod.querySelector(".pInterac");
+        var pIntBod = pBod.querySelector(".pIntBody");
+        if(pInt.style.display==""||pInt.style.display=="none"){
+            pInt.style.display = "block";
+        }
+        else{
+            pInt.style.display = "none";
+        }
+        pInter.innerHTML="Likes";
+        pIntBod.innerHTML = "Be the first one to like";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getLikedUsers",true);
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status ==200){
+                var html = "";
+                var response = JSON.parse(this.response);
+                
+                //console.log(response.likedUsers);
+                response.likedUsers.forEach(element => {
+                    html+='<div class="likedUsers">';
+                        html+=element;
+                    html+='</div>';
+                })
+
+                pIntBod.innerHTML = html;
+
+            }
+        }
+
+        var formData = new FormData();
+        formData.append("postId",pId);
+
+        xhr.send(formData);
+    }
+
+    function commentPost(c, pId, flag){
+        var pBod = c.closest(".pBody");
+        var pInt = pBod.querySelector(".pInteractions");
+        //var pInter = pBod.querySelector(".pInterac");
+        var pIntBod = pBod.querySelector(".pIntBody");
+        var pIntInp = pBod.querySelector(".pIntInput");
+        var html = "";
+        
+        if(pInt.style.display==""||pInt.style.display=="none"){
+            pInt.style.display = "block";
+        }
+        else{
+            pInt.style.display = "none";
+        }
+        //pInter.innerHTML="Comments";
+        displayComments(pIntBod, pId, flag);
+        //pIntBod.innerHTML = "Be the first one to Comment";
+        html+='<input id="commentBox" name="commentBox" type="text">';
+        html+='<input  type="button" onclick="addComment(this,&#39;'+pId+'&#39;,'+flag+')" value="post">';
+        pIntInp.innerHTML=html;
+
+    }
+    // function adddComment(c){
+    //     alert(c.parentElement.querySelector("#commentBox").value);
+    // }
+
+    function addComment(c, pId, flag){
+        var commentDiv = c.parentElement.querySelector("#commentBox");
+        var comDisDiv = commentDiv.parentElement.parentElement.querySelector(".pIntBody");
+        var com = commentDiv.value;
+        console.log(comDisDiv);
+        //alert(pId);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/addComment",true);
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 200){
+                var resp = JSON.parse(this.response);
+                console.log(comDisDiv);
+                displayComments(comDisDiv, pId, flag);
+            }
+        }
+
+        var formData = new FormData();
+        
+        formData.append("postId", pId);
+        formData.append("userId", user._id);
+        formData.append("comment", com);
+        formData.append("flag",flag);
+
+        xhr.send(formData);
+    }
+
+    function displayComments(c, pId, flag){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getComments",true);
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this. status == 200){
+                var resp =  JSON.parse(this.response);
+                var comments = resp.comments;
+                var html = "";
+                
+                console.log(comments);
+                if(comments.length>0){
+                    comments.forEach(element => {
+                    html+= '<div class="pBody comDiv">';
+                        html+='<div class="cBody">';
+                            html+='<div class="cUname">';
+                                html+=element.user.username;
+                            html+='</div>';
+                            html+='<div class="cCom">';
+                                html+=element.comment;
+                            html+="</div>";
+                        html+='</div>';
+                        html+='<div class="cOptions">';
+                            html+='<ul>';
+                                html+='<li>';
+                                    html+='<a onclick="commentPost(this,&#39;'+element._id+'&#39;,1)">Reply</a>';
+                                html+='</li>';
+                            html+='</ul>';
+                        html+='</div>';
+                        html+='<div class="pInteractions">';
+                            html+='<div class="pIntBody"></div>';
+                            html+='<div class="pIntInput"></div>';
+                        html+='</div>';
+                    html+='</div>';
+
+                });
+                }
+                else{
+                    html+="Be the first to comment";
+                }
+                
+                c.innerHTML = html;
+            }
+
+        }
+
+        var formData = new FormData();
+        formData.append("postId", pId);
+        formData.append("flag",flag);
+        xhr.send(formData);
+        
+    }
+
+
+
+    function displayPosts(postBody, posts){
+        var html = '';
+        posts.forEach(element => {
+        var d = new Date(element.timestamp);
+        var likes = 0;
+        var liked = false;
+        //console.log("djjd");
+        if(element.likes!=undefined){
+            
+            likes = element.likes.length;
+            liked = (element.likes.some(e=>e._id == user._id))?true:false;
+                //console.log(likedUsers);
+                // liked = (element.likes.contains(user._id))?true:false;
+                // console.log(element.likes);
+                // console.log(user._id);
+                // console.log(liked);
+            }
+                         
+            html+= '<div class="post">';
+                html+='<div class="pDetails">';
+                    html+='<div class="pUName">';
+                        html+=element.user.name
+                    html+='</div>';
+                    html+='<div class="pTime">'
+                        html+=d.toLocaleString()
+                    html+='</div>';
+                html+='</div><hr>'
+                html+='<div class="pBody">'+element.posttext;
+                html+= '<div class="postMedia">';
+                html+= '<img src="http://localhost:3000/'+element.postImage+'" alt="">';
+                if(typeof element.postVideo!="undefined"&&element.postVideo!=""){
+                    html+= '<video src="http://localhost:3000/'+element.postVideo+'" controls></video>';
+                }
+                html+= '</div>';
+                html+='<hr>';
+                html+='<div class="postOptions">';
+                    html+='<ul>';
+                        html+='<li>';
+                            html+='<a onclick="likePost(this,&#39;'+element._id+'&#39;)"><i class="';
+                                if(liked){
+                                    html+="like";
+                                }
+                            html+=' fa fa-thumbs-up"></i></a><span onclick="getLikedUsers(this,&#39;'+element._id+'&#39;)" id="noLikes">&nbsp'+likes+'</span>';
+                        html+='</li>';
+                        html+='<li>';
+                            html+='<a onclick="commentPost(this,&#39;'+element._id+'&#39;,0)"><i class="fa fa-comment"></i>&nbsp;Comment</a>';
+                        html+='</li>';
+                    html+='</ul>';
+                html+='</div>';
+                html+='<div class="pInteractions">';
+                    html+='<hr>';
+                    html+='<div class="pInterac"></div>';
+                    html+='<div class="pIntBody"></div>';
+                    html+='<div class="pIntInput"></div>';
+                html+='</div>';
+            html+='</div>';
+        html+='</div>';
+        });
+        postBody.innerHTML = html;
+    }
+
+    function isFriend(){
+        if(typeof oUser.connections!="undefined"){
+            console.log("ncjd");
+            console.log(oUser.username);
+            
+            if(typeof oUser.connections.friends!="undefined"){
+                if(oUser.connections.friends.some(e=>e.username==user.username)){
+            //if friends
+            return '<button id="addFriend" onclick="">Friends</button>';
+            }
+            }
+            else if(typeof oUser.connections.frreq!="undefined"){
+                //console.log("dd");
+                if(oUser.connections.frreq.some(e=>e.username==user.username)){
+                    //if u sent req to o
+                    return '<button id="addFriend" onclick="">Friend Request Sent</button>'
+                }
+            }
+            else if(typeof oUser.connections.frsent!="undefined"){
+                if(oUser.connections.frsent.some(e=>e.username==user.username)){
+                //if o sent req to u
+                return '<button id="addFriend" onclick="">Accept</button>';
+                }
+            }
+        }
+        return '<button id="addFriend" onclick="addFriendReq()">Add Friend</button>';
+        
+    }
+    function addFriendReq(){
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/friendReq",true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState==4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                if(response.status == "success"){
+                    document.querySelector("#addFriend").innerHTML = "Friend Request Sent";
+                }
+            }
+        }
+        var formData = new FormData();
+        formData.append("uName", user.username);
+        formData.append("otUName", oUser.username);
+        xhr.send(formData);
+    }
+
+</script>
