@@ -1,5 +1,6 @@
 var express = require("express");
 var app= express();
+const PORT = process.env.PORT || 3000;
 
 var formidable = require("express-formidable");
 app.use(formidable());
@@ -9,7 +10,7 @@ var mongoClient = mongodb.MongoClient;
 var ObjectId = mongodb.ObjectID;
 
 var http = require("http").createServer(app);
-var bcrypt = require("bcrypt");
+//var bcrypt = require("bcrypt");
 var fileSystem = require("fs");
 
 var jwt = require("jsonwebtoken");
@@ -34,10 +35,10 @@ var mainURL = "http://localhost:3000";
 // });
 var upload = multer({dest:''});
 
-http.listen(3000,function(){
+http.listen(PORT,function(){
     console.log("Server started at port 3000");
 
-    mongoClient.connect("mongodb://localhost:27017",function(error,client){
+    mongoClient.connect("mongodb+srv://user1:qwerty123@cluster0.ws1pj.mongodb.net/",function(error,client){
         var database = client.db("social_media_network");
         console.log("Database connected");
 
