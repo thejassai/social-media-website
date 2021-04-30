@@ -54,17 +54,17 @@
         if(localStorage.getItem("accessToken")){
             html+='<div><form><input id="searchBar" name="searchBar" type="text" onkeypress="return searchResKey()" /><input  type="button" onclick="searchRes()"" value="search"></form></div>';
             html+='<div class="navOptions">';
-            html+='<div><a href="/">Home</a></div>';
-            html+='<div><a href="/profile">Profile</a></div>';
-            html+='<div><a href="/logout" onclick="logOut()">Logout</a></div>';
+            html+='<div><a href="/">HOME</a></div>';
+            html+='<div><a href="/profile">PROFILE</a></div>';
+            html+='<div><a href="/logout" onclick="logOut()">LOGOUT</a></div>';
 
             html+='</div>';
 
         }
         else{
             html+='<div class="navOptions">';
-            html+='<div><a href="/login">Login</a></div>';
-            html+='<div><a href="/signup">Signup</a></div>';
+            html+='<div><a href="/login">LOGIN</a></div>';
+            html+='<div><a href="/signup">SIGNUP</a></div>';
             html+='</div>';
 
         }

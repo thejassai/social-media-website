@@ -1,10 +1,11 @@
 body {
     margin: 0;
     background-color: rgb(235, 254, 255);
+    font-family: 'Noto Sans', sans-serif;
 }
 
 nav {
-    padding: 25px 0;
+    padding: 20px 0;
     background-color: #5891ff;
     /* text-align: center; */
     position: sticky;
@@ -21,8 +22,17 @@ nav div {
 width: 100%;
 } */
 .navOptions {
+    font-size: 16px;
     position: absolute;
     right: 50px;
+}
+.navOptions a{
+    font-size: 18px;
+    color: #000000;
+    text-decoration: none;
+}
+.navOptions a:hover{
+    color: #404040
 }
 
 .navOptions div {
@@ -33,7 +43,14 @@ width: 100%;
     font-size: 25px;
     display: inline-block;
     margin: 0 50px;
+    font-weight: bolder;
+    color: #ea4335;
+    cursor: pointer;
 }
+.logo span{
+    color: #fbbc05;
+}
+
 
 .auth_div {
     text-align: center;
@@ -71,7 +88,7 @@ width: 100%;
 .coverPic img{
     width: 100%;;
     position: absolute;
-    clip: rect(94px, 100vw, 394px, 0);
+    clip: rect(89.4px, 100vw, 389.4px, 0);
     top: 0px;
 
 }
