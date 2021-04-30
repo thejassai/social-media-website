@@ -202,7 +202,8 @@ http.listen(PORT,function(){
 					}, function (error, data) {
 						result.json({
 							"status": "status",
-							"message": "Profile updated."
+							"message": "Profile updated.",
+                            "aws": displayPic
 						});
 					});
 				}
