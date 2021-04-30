@@ -41,8 +41,22 @@ width: 100%;
     
 }
 .coverPic{
-    height: 200px;
+    height: 300px;
     background-color: blue;
+}
+
+.coverPic img{
+    width: 100%;;
+    position: absolute;
+    clip: rect(94px, 100vw, 394px, 0);
+    top: 0px;
+
+}
+#btnCoverPic{
+    position: relative;
+    left:80%;
+    top: 80%;
+    
 }
 .dPic{
     /* height: 150px; */
