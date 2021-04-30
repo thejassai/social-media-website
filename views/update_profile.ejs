@@ -72,7 +72,10 @@
     }
     
     function setDetails(){
-        document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
+        setTimeout(function(){
+            document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
+
+        }, 750);
         if(typeof user.name!="undefined")
         {
             document.querySelector("input[name='name']").value=user.name;

@@ -38,7 +38,7 @@
     window.oUser = null;
     window.userName = null;
     function setFrsec(){
-        getFriends();
+        getFriends(user.username);
         document.querySelector(".conRes").innerHTML="";
         document.querySelector(".conns").innerHTML = "Friends";
         document.querySelector(".cFr").style.display = "inline-block";

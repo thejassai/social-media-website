@@ -224,6 +224,7 @@ http.listen(PORT,function(){
                     });
                 }
                 else{
+                    //console.log("cnwencoiewnoiew",user.password);
                     result.json({
                         "status": "success",
                         "message": "Data fetched",
@@ -349,14 +350,48 @@ http.listen(PORT,function(){
         });
 
         app.post("/getPosts", function(request, result){
-            database.collection("posts").find({}).sort({"timestamp":-1}).toArray(function(error, data){
+            var uName = request.fields.username;
+            //console.log(uName);
+            database.collection("users").findOne({"username":uName},function(err, user){
+                if(user!=null){
+                    user.connections.friends.push({"username": uName});
+                    console.log(user.connections.friends);
+                    var count = 0;
+                    var posts = [];
+                    user.connections.friends.forEach(element=>{
+                        database.collection("posts").find({"user.name":element.username}).toArray(function(err, data){
+                            // if(posts.length == 0){
+                            //     posts.push(data);
+                            // }
+                            // else{
+                            //     posts.concat(data);
+                            // }
+                            if(data.length>0){
+                                data.forEach(e=>{
+                                    posts.push(e);
+                                })
+                            }
+
+                            if(++count == user.connections.friends.length){
+                                posts.sort(function(a,b){
+                                    return b.timestamp-a.timestamp;
+                                })
+                                console.log(posts);
+                                result.json({
+                                    "status":"success",
+                                    "data":posts
+                                });
+                            }
+                            //console.log(data);
+                        });
+                    })
+                }
+            })
+            // database.collection("posts").find({}).sort({"timestamp":-1}).toArray(function(error, data){
                 
-                //console.log(data);
-                result.json({
-                    "status":"success",
-                    "data":data
-                });
-            });
+            //     //console.log(data);
+            
+            // });
         });
 
         app.post("/getMyPosts", function(request, result){

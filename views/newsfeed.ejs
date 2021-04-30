@@ -38,6 +38,7 @@
 
 <%- include("templates/footer") %>
 <script>
+    var isNewsFeed = true;
     function previewImage(image){
         var file = image.files;
         //console.log(file);
@@ -71,7 +72,7 @@
 
 
     
-    function getPosts(){
+    function getPosts(username){
         var xhr = new XMLHttpRequest();
         xhr.open("POST","/getPosts",true);
 
@@ -88,8 +89,9 @@
                 }
             }
         }
-
-        xhr.send();
+        var formData = new FormData();
+        formData.append("username", username);
+        xhr.send(formData);
     };
 
     function createPost(form) {

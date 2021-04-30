@@ -18,7 +18,10 @@
                         window.user = resp.userData;
                         console.log(window.user);
                         console.log("working");
-                        
+
+                        if(typeof isNewsFeed!=="undefined" && isNewsFeed){
+                            getPosts(resp.userData.username);
+                        }
                         if(typeof isProfile!=="undefined" && isProfile){
                            getData();
                            getFriends(resp.userData.username);
@@ -29,6 +32,7 @@
                         }
                         if(typeof isEditProf !== "undefined" && isEditProf){
                             setDetails();
+                            
                         }
                     } else{
                         localStorage.removeItem("accessToken");
@@ -288,7 +292,14 @@
             html+= '<div class="post">';
                 html+='<div class="pDetails">';
                     html+='<div class="pUName">';
-                        html+=element.user.name
+                        html+="<a href=";
+                            if(user.username==element.user.name){
+                                html+='/profile';
+                            }
+                            else{
+                                html+='"/user/'+element.user.name+'"';
+                            }
+                            html+=">"+element.user.name+"</a>";
                     html+='</div>';
                     html+='<div class="pTime">'
                         html+=d.toLocaleString()
@@ -405,7 +416,7 @@
                     html+='<div class="frItem">';
                         html+="<img src='https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+element.displayPic+"' alt=''>";
                         html+="<div class='sUname'><a href=";
-                            html+='"user/'+element.username+'"';
+                            html+='"/user/'+element.username+'"';
                             html+=">"+element.username+"</a></div>";
                     html+='</div>';
                 });
