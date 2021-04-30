@@ -1,44 +1,68 @@
-body{
+body {
     margin: 0;
     background-color: rgb(235, 254, 255);
 }
-nav{
+
+nav {
     padding: 25px 0;
     background-color: aquamarine;
     /* text-align: center; */
-    position:sticky;
+    position: sticky;
     top: 0;
     z-index: 2;
 }
-nav div{
+
+nav div {
     display: inline-block;
 }
+
 /* .navMenu{
     display: inline-block;
 width: 100%;
 } */
-.navOptions{
-    position:absolute;
+.navOptions {
+    position: absolute;
     right: 50px;
 }
-.navOptions div{
+
+.navOptions div {
     margin: 0 20px;
 }
-.logo{
+
+.logo {
     font-size: 25px;
     display: inline-block;
-    margin:0 50px;
+    margin: 0 50px;
 }
-.auth_div{
+
+.auth_div {
     text-align: center;
     border: 1px solid black;
-    width: min(450px,50%);
+    width: min(450px, 50%);
     max-width: 700px;
     margin: 50px auto;
 }
-.auth_div div{
+
+.auth_div div {
     margin: 15px;
-    
+
+}
+
+
+.coverPic {
+    height: 200px;
+    background-color: blue;
+}
+
+.dPic{
+
+    /* height: 150px; */
+    background-color: cornflowerblue;
+    width: 150px;
+    margin: 0 auto 10px;
+    border-radius: 100%;
+    /* position: relative;
+    margin-top: -75px; */
 }
 .coverPic{
     height: 300px;
@@ -58,23 +82,16 @@ width: 100%;
     top: 80%;
     
 }
-.dPic{
-    /* height: 150px; */
-    background-color: cornflowerblue;
-    width: 150px;
-    margin: 0 auto 10px;
-    border-radius: 100%;
-    /* position: relative;
-    margin-top: -75px; */
-}
+
 /* .dPic img{
     width: 100%;
 
 } */
-.profBody{
+.profBody {
     padding: 15px 25px;
 }
-.profLeftSide{
+
+.profLeftSide {
     width: max(25%, 300px);
     max-width: 450px;
     position: sticky;
@@ -84,7 +101,8 @@ width: 100%;
     /* border: 1px solid black; */
 
 }
-.uDetails{
+
+.uDetails {
     /* width: min(25%, 300px);
     max-width: 450px; */
     /* width: 85%;
@@ -101,63 +119,78 @@ width: 100%;
     /* display: inline-block; */
 
 }
-.conns{
+
+.conns {
     font-size: 20px;
     font-weight: 600;
 }
-.conn{
+
+.conn {
     display: inline;
 }
-.frDiv{
-    margin:20px 0;
+
+.frDiv {
+    margin: 20px 0;
     /* width: min(25%, 300px);
     max-width: 450px; */
     border: 1px solid black;
     padding: 20px;
 
 }
-.conRes{
+
+.conRes {
     margin-top: 10px;
 }
-.cF{
+
+.cF {
     display: none;
 }
-.conOpt{
+
+.conOpt {
     float: right;
 }
-.frItem{
+
+.frItem {
     display: inline-block;
     margin: 0 1%;
 }
-.frItem img{
+
+.frItem img {
     width: 90px;
 }
-.create_post{
+
+.create_post {
     width: 50%;
     margin: 20px auto;
     text-align: center;
 }
-.posts, .nPosts{
+
+.posts,
+.nPosts {
     /* width: 50%; */
     min-width: 450px;
     max-width: 630px;
     /* margin: auto; */
 }
-.nPosts{
+
+.nPosts {
     width: 50%;
     margin: auto;
 }
-.post{
+
+.post {
     border: 1px solid lightgrey;
     margin: 20px 0;
     background-color: white;
     border-radius: 5px;
 }
-.post:hover{
+
+.post:hover {
     border: 1px solid gray;
     cursor: pointer;
 }
-.myPosts{
+
+.myPosts {
     /* text-align: center; */
     padding-left: 20px;
     /* min-width: 50%; */
@@ -165,80 +198,96 @@ width: 100%;
     margin-left: max(32%, 360px);
     /* margin-right: 0; */
 }
+
 /* .myPosts h1{
     text-align: center;
 } */
 
-.pUName{
+.pUName {
     display: inline-block;
     margin: 0 10px;
 }
-.pTime{
+
+.pTime {
     display: inline-block;
     margin: 0 10px;
 }
-.pDetails, .pBody{
+
+.pDetails,
+.pBody {
     padding: 10px;
 
 }
 
-.pBody{
+.pBody {
     font-size: 2em;
 }
-.postMedia img{
+
+.postMedia img {
     width: 100%;
 }
-.postMedia video{
+
+.postMedia video {
     max-width: 100%;
     z-index: -2;
 }
 
-.edProPic{
+.edProPic {
     text-align: center;
     position: relative;
     top: 80%;
 }
-.attachments li{
+
+.attachments li {
     display: inline-block;
     margin: 0 15px;
 }
-.attachments input[type="file"]{
-display: none;
+
+.attachments input[type="file"] {
+    display: none;
 }
-#prevImage{
+
+#prevImage {
     margin: 15px 0;
     width: 300px;
     display: none;
 }
-#prevVideo{
+
+#prevVideo {
     margin: 15px 0;
     width: 300px;
     display: none;
 }
-.postOptions{
+
+.postOptions {
     font-size: 0.7em;
 }
-.postOptions ul{
+
+.postOptions ul {
     margin: 10px 0;
     padding: 0;
 }
-.postOptions ul li{
+
+.postOptions ul li {
     list-style-type: none;
     margin-left: 20px;
     display: inline-block;
 }
-.postOptions ul li i{
+
+.postOptions ul li i {
     color: gray;
 }
-.like{
+
+.like {
     color: forestgreen !important;
 }
-.postOptions a{
+
+.postOptions a {
     text-decoration: none;
     color: black;
 }
 
-.persDetails{
+.persDetails {
     width: 40%;
     margin: 20px auto 0;
     border: 1px solid black;
@@ -247,42 +296,44 @@ display: none;
 
 }
 
-.pInteractions{
+.pInteractions {
     display: none;
     font-size: 0.8em;
 }
 
-.pInterac{
+.pInterac {
     text-align: center;
 }
 
-.pIntBody{
+.pIntBody {
     font-size: 0.7em;
     margin-left: 15px;
 }
 
-hr{
+hr {
     height: 1px;
     background-color: lightgrey;
     border: none;
 }
 
-.searchResults{
-    width: max(480px,min(50%,650px));
+.searchResults {
+    width: max(480px, min(50%, 650px));
     margin: auto;
 }
-.searchItem{
+
+.searchItem {
     border: 1px solid lightgrey;
     padding: 5px;
     margin: 10px 0;
 }
-.searchItem img{
+
+.searchItem img {
     width: 100px;
     background-color: limegreen;
 
 }
 
-.searchItem .sUname{
+.searchItem .sUname {
     display: inline-block;
     position: relative;
     bottom: 55px;
@@ -291,36 +342,43 @@ hr{
     margin-left: 15px;
 }
 
-.searchItem .addFrReq{
+.searchItem .addFrReq {
     float: right;
     margin-top: 35px;
 }
 
-.comDiv{
+.comDiv {
     background-color: #F5F5F5;
     border-radius: 5px;
     margin: 2px;
     font-size: 0.95em;
 }
-.cBody{
+
+.cBody {
     margin: 3px;
 }
-.comDiv ul{
+
+.comDiv ul {
     display: inline;
     padding: 0;
 }
-.comDiv li{
+
+.comDiv li {
     list-style-type: none;
 }
-.cUname{
+
+.cUname {
     font-weight: bold;
 }
-.cCom{
+
+.cCom {
     font-size: 1.15em;
 }
-.cOptions a:hover{
+
+.cOptions a:hover {
     text-decoration: underline;
 }
-.comDiv .pIntBody{
+
+.comDiv .pIntBody {
     font-size: 16px;
 }
