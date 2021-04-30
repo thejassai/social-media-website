@@ -24,6 +24,15 @@ const { count } = require("console");
 app.use("/public",express.static(__dirname+"/public"));
 app.set("view engine","ejs");
 
+const aws =  require('aws-sdk');
+const ID = 'AKIAZ2NZM347ZC2KAFNQ';
+const SECRET = '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';
+const BUCKET_NAME = 'spacebook-bucket';
+const s3 = new aws.s3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET 
+});
+
 var socketIO = require("socket.io")(http);
 var socketID = "";
 
@@ -140,6 +149,24 @@ http.listen(PORT,function(){
             var mobno = request.fields.mobno;
             var displayPic = "";
 
+            const uploadDpic = (fileName)=>{
+                const fileCont = fileSystem.readFileSync(fileName);
+
+                const params = {
+                    Bucket: BUCKET_NAME,
+                    Key: displayPic,
+                    Body: fileCont
+                };
+
+                s3.upload(params, function(err, data){
+                    if(err){
+                        throw err;
+                    }
+                    console.log('File uploaded successfully',data.location);
+                    return data.location;
+                })
+            }
+
 			database.collection("users").findOne({
 				"accessToken": accessToken
 			}, function (error, user) {
@@ -150,17 +177,18 @@ http.listen(PORT,function(){
 					});
 				} else {
                     if(request.files.disPic.size>0){
-                        displayPic = "public/images/users/"+user.username+new Date().getTime()+request.files.disPic.name;
+                        displayPic = user.username+new Date().getTime()+request.files.disPic.name;
+                        displayPic = uploadDpic(request.files.disPic.path);
 
-                        fileSystem.readFile(request.files.disPic.path,(err, data)=>{
-                            if(err) throw err;
-                            fileSystem.writeFile(displayPic,data,(err)=>{
-                                if(err) throw err;
-                            });
-                            fileSystem.unlink(request.files.disPic.path,(err)=>{
-                                if(err) throw err;
-                            });
-                        });
+                        // fileSystem.readFile(request.files.disPic.path,(err, data)=>{
+                        //     if(err) throw err;
+                        //     fileSystem.writeFile(displayPic,data,(err)=>{
+                        //         if(err) throw err;
+                        //     });
+                        //     fileSystem.unlink(request.files.disPic.path,(err)=>{
+                        //         if(err) throw err;
+                        //     });
+                        // });
                     }
 					database.collection("users").updateOne({
 						"accessToken": accessToken
