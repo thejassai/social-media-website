@@ -1,6 +1,6 @@
 <%- include("templates/header") %>
 <div class="coverPic">
-    <button>Update Coverphoto</button>
+    <img src="" alt="">
 </div>
 <div class="profBody">
 
@@ -96,6 +96,7 @@
     var htm = "";
     htm+="<div>Welcome "+user.username+"</div>"
     document.querySelector(".uInfo").innerHTML = htm;
+    document.querySelector(".coverPic img").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.covPic;
     document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
     }
     var isProfile = true;

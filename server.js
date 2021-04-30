@@ -166,6 +166,10 @@ http.listen(PORT,function(){
 			var email = request.fields.email;
             var mobno = request.fields.mobno;
             var displayPic = "";
+            var covPic = "";
+
+            // console.log(displayPic);
+            // console.log(covPic);
 
             
 
@@ -192,6 +196,10 @@ http.listen(PORT,function(){
                         //     });
                         // });
                     }
+                    if(request.files.covPic.size>0){
+                        covPic = user.username+new Date().getTime()+request.files.covPic.name;
+                        uploadDpic(request.files.covPic.path, covPic);
+                    }
 					database.collection("users").updateOne({
 						"accessToken": accessToken
 					}, {
@@ -199,7 +207,8 @@ http.listen(PORT,function(){
 							"name": name,
 							"email": email,
                             "mobno": mobno,
-                            "displayPic": displayPic
+                            "displayPic": displayPic,
+                            "covPic": covPic
 						}
 					}, function (error, data) {
 						result.json({

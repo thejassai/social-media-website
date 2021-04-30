@@ -1,5 +1,6 @@
 <%- include("templates/header") %>
 <div class="coverPic">
+    <img src="" alt="">
 </div>
 <div class="profBody">
 
@@ -57,6 +58,8 @@
                 window.oUser = response.userData;
                 console.log(oUser);
                 document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+oUser.displayPic;
+                document.querySelector(".coverPic img").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+oUser.covPic;
+
                 document.querySelector(".cisFriend").innerHTML = isFriend(oUser.username);
                 getFriends(oUser.username);
                 getOPosts();

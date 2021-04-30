@@ -1,7 +1,10 @@
 <%- include ("templates/header") %>
 
 
-
+<div class="coverPic">
+    <img src="" alt="">
+    <input id="btnCoverPic" type="file" accept="image/*" onchange="previewCovPic(this)">
+</div>
 <div>
     
 
@@ -49,9 +52,28 @@
             fileReader.readAsDataURL(file[0]);
         }
     }
+    function previewCovPic(image){
+        var file = image.files;
+        console.log(file);
+        // var x = document.querySelector("#btnCoverPic");
+        // console.log("cndeiwns",x.files);
+        if(file.length>0){
+            var fileReader = new FileReader();
+
+            fileReader.onload = function(event){
+                //console.log(event.target);
+                document.querySelector(".coverPic img").src = event.target.result;
+            }
+
+            fileReader.readAsDataURL(file[0]);
+        }
+
+        
+    }
 
     function updateProfile(form) {
-
+        var x = document.querySelector("#btnCoverPic");
+        //console.log(x);
         var ajax = new XMLHttpRequest();
         ajax.open("POST", "/updateProfile", true);
 
@@ -66,13 +88,16 @@
             }
         };
 
+
         var formData = new FormData(form);
+        formData.append("covPic",x.files[0]);
         formData.append("accessToken", localStorage.getItem("accessToken"));
         ajax.send(formData);
     }
     
     function setDetails(){
         setTimeout(function(){
+            document.querySelector(".coverPic img").src= "https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.covPic;
             document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
 
         }, 750);

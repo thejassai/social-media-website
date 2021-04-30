@@ -48,12 +48,14 @@ width: 100%;
 
 }
 
+
 .coverPic {
     height: 200px;
     background-color: blue;
 }
 
-.dPic {
+.dPic{
+
     /* height: 150px; */
     background-color: cornflowerblue;
     width: 150px;
@@ -61,6 +63,24 @@ width: 100%;
     border-radius: 100%;
     /* position: relative;
     margin-top: -75px; */
+}
+.coverPic{
+    height: 300px;
+    background-color: blue;
+}
+
+.coverPic img{
+    width: 100%;;
+    position: absolute;
+    clip: rect(94px, 100vw, 394px, 0);
+    top: 0px;
+
+}
+#btnCoverPic{
+    position: relative;
+    left:80%;
+    top: 80%;
+    
 }
 
 /* .dPic img{
