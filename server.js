@@ -28,7 +28,7 @@ const aws =  require('aws-sdk');
 const ID = 'AKIAZ2NZM347ZC2KAFNQ';
 const SECRET = '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';
 const BUCKET_NAME = 'spacebook-bucket';
-const s3 = new aws.s3({
+const s3 = new aws.S3({
     accessKeyId: ID,
     secretAccessKey: SECRET 
 });
