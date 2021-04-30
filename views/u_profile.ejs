@@ -12,8 +12,15 @@
             </div>
             <div class="cisFriend">
                 <button id="addFriend" onclick="addFriendReq()">Add Friend</button>
+            </div>  
+        </div>
+        <div class="frDiv">
+            <div>
+                <span class="conns">Friends</span>
+                <div class="conRes">
+                    
+                </div>
             </div>
-            
         </div>
     </div>
     <div class="myPosts">
@@ -49,8 +56,9 @@
                 var response = JSON.parse(this.responseText);
                 window.oUser = response.userData;
                 console.log(oUser);
-                document.querySelector(".dPic").src="http://localhost:3000/"+oUser.displayPic;
-                document.querySelector(".cisFriend").innerHTML = isFriend();
+                document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+oUser.displayPic;
+                document.querySelector(".cisFriend").innerHTML = isFriend(oUser.username);
+                getFriends(oUser.username);
                 getOPosts();
             }
         }
@@ -63,7 +71,7 @@
     var isOProfile = true;
     function onLoadFuncs(){
         getUser();
-
+        
     }
     window.onload = onLoadFuncs;
 </script>

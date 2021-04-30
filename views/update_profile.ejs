@@ -72,7 +72,7 @@
     }
     
     function setDetails(){
-        document.querySelector(".dPic").src="http://localhost:3000/"+user.displayPic;
+        document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
         if(typeof user.name!="undefined")
         {
             document.querySelector("input[name='name']").value=user.name;

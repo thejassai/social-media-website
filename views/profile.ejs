@@ -1,5 +1,6 @@
 <%- include("templates/header") %>
 <div class="coverPic">
+    <button>Update Coverphoto</button>
 </div>
 <div class="profBody">
 
@@ -19,7 +20,7 @@
                 <div>
                     <span class="conns">Friends</span>
                     <button class="conOpt cFr" onclick="getFriendRequests()">Requests</button>
-                    <button class="conOpt cF" onclick="getFriends()">Friends</button>
+                    <button class="conOpt cF" onclick="setFrsec()">Friends</button>
                     <div class="conRes">
                         
                     </div>
@@ -35,7 +36,9 @@
 <%- include("templates/footer") %>
 <script>
     window.oUser = null;
-    function getFriends(){
+    window.userName = null;
+    function setFrsec(){
+        getFriends();
         document.querySelector(".conRes").innerHTML="";
         document.querySelector(".conns").innerHTML = "Friends";
         document.querySelector(".cFr").style.display = "inline-block";
@@ -51,12 +54,12 @@
                 response.frreq.forEach(element => {
                     oUser = element;
                     html+='<div class="frItem">';
-                        html+="<img src='http://localhost:3000/"+element.displayPic+"' alt=''>";
+                        html+="<img src='https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+element.displayPic+"' alt=''>";
                         html+="<div class='sUname'><a href=";
                             html+='"user/'+element.username+'"';
                             html+=">"+element.username+"</a></div>";
                             html+='<div class="">';
-                                if(element.username!=user.username) html+='<button id="addFriend" onclick="">Accept</button>';;
+                                if(element.username!=user.username) html+='<button id="addFriend" onclick="accFriendReq(&#39;'+element.username+'&#39;,this)">Accept</button>';;
                             html+='</div>';
                     html+='</div>';
                 });
@@ -70,6 +73,7 @@
         formData.append("aToken", localStorage.getItem("accessToken"));
         xhr.send(formData);
     }
+    
     function getMyPosts(){
         var xhr = new XMLHttpRequest();
         xhr.open("POST","/getMyPosts",true);
@@ -92,12 +96,13 @@
     var htm = "";
     htm+="<div>Welcome "+user.username+"</div>"
     document.querySelector(".uInfo").innerHTML = htm;
-    document.querySelector(".dPic").src="http://localhost:3000/"+user.displayPic;
+    document.querySelector(".dPic").src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+user.displayPic;
     }
     var isProfile = true;
     function onLoadFuncs(){
         getUser();
         getMyPosts();
+        
     }
     window.onload = onLoadFuncs;
 </script>

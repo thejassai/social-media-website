@@ -18,11 +18,14 @@
                         window.user = resp.userData;
                         console.log(window.user);
                         console.log("working");
+                        
                         if(typeof isProfile!=="undefined" && isProfile){
                            getData();
+                           getFriends(resp.userData.username);
                         }
                         if(typeof isOProfile!=="undefined" && isOProfile){
                             getOData();
+                            
                         }
                         if(typeof isEditProf !== "undefined" && isEditProf){
                             setDetails();
@@ -293,9 +296,11 @@
                 html+='</div><hr>'
                 html+='<div class="pBody">'+element.posttext;
                 html+= '<div class="postMedia">';
-                html+= '<img src="http://localhost:3000/'+element.postImage+'" alt="">';
-                if(typeof element.postVideo!="undefined"&&element.postVideo!=""){
-                    html+= '<video src="http://localhost:3000/'+element.postVideo+'" controls></video>';
+                if(typeof element.postImage!="undefined" && element.postImage!=""){
+                    html+= '<img src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/'+element.postImage+'" alt="">';
+                }
+                if(typeof element.postVideo!="undefined" && element.postVideo!=""){
+                    html+= '<video src="https://spacebook-bucket.s3.us-east-2.amazonaws.com/'+element.postVideo+'" controls></video>';
                 }
                 html+= '</div>';
                 html+='<hr>';
@@ -325,7 +330,7 @@
         postBody.innerHTML = html;
     }
 
-    function isFriend(){
+    function isFriend(oUName){
         if(typeof oUser.connections!="undefined"){
             console.log("ncjd");
             console.log(oUser.username);
@@ -346,27 +351,69 @@
             else if(typeof oUser.connections.frsent!="undefined"){
                 if(oUser.connections.frsent.some(e=>e.username==user.username)){
                 //if o sent req to u
-                return '<button id="addFriend" onclick="">Accept</button>';
+                return '<button id="addFriend" onclick="accFriendReq(&#39;'+oUName+'&#39;,this)">Accept</button>';
                 }
             }
         }
-        return '<button id="addFriend" onclick="addFriendReq()">Add Friend</button>';
+
+        return '<button id="addFriend" onclick="addFriendReq(&#39;'+oUName+'&#39;,this)">Add Friend</button>';
         
     }
-    function addFriendReq(){
+    function addFriendReq(oUName,b){
         var xhr = new XMLHttpRequest();
         xhr.open("POST","/friendReq",true);
         xhr.onreadystatechange = function(request, result){
             if(this.readyState==4 && this.status == 200){
                 var response = JSON.parse(this.responseText);
                 if(response.status == "success"){
-                    document.querySelector("#addFriend").innerHTML = "Friend Request Sent";
+                    b.innerHTML = "Friend Request Sent";
                 }
             }
         }
         var formData = new FormData();
         formData.append("uName", user.username);
-        formData.append("otUName", oUser.username);
+        formData.append("otUName", oUName);
+        xhr.send(formData);
+    }
+
+    function accFriendReq(oUName, b){
+        //console.log(oUName);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/accFrReq",true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState==4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                b.innerHTML = "Friends";
+            }
+        }
+        var formData = new FormData();
+        formData.append("uName", user.username);
+        formData.append("otUName", oUName);
+        xhr.send(formData);
+    }
+
+    function getFriends(username){
+        console.log(username);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST","/getFriends", true);
+        xhr.onreadystatechange = function(request, result){
+            if(this.readyState == 4 && this.status == 200){
+                var response = JSON.parse(this.responseText);
+                var html = "";
+                response.friends.forEach(element => {
+                    oUser = element;
+                    html+='<div class="frItem">';
+                        html+="<img src='https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+element.displayPic+"' alt=''>";
+                        html+="<div class='sUname'><a href=";
+                            html+='"user/'+element.username+'"';
+                            html+=">"+element.username+"</a></div>";
+                    html+='</div>';
+                });
+                document.querySelector(".conRes").innerHTML=html;
+            }
+        }
+        var formData = new FormData();
+        formData.append("username", username);
         xhr.send(formData);
     }
 

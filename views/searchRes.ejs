@@ -8,6 +8,10 @@
 
 <script>
     var oUser = null;
+    var isSearch = true;
+    function addFriend(c){
+
+    }
     function searchBar(){
         var xhr = new XMLHttpRequest();
         var sVal = document.querySelector("#sVal").innerHTML;
@@ -22,17 +26,17 @@
                 data.forEach(element => {
                     oUser = element;
                     html+="<div class='searchItem'>";
-                        html+="<img src='http://localhost:3000/"+element.displayPic+"' alt=''>";
+                        html+="<img src='https://spacebook-bucket.s3.us-east-2.amazonaws.com/"+element.displayPic+"' alt=''>";
                         html+="<div class='sUname'><a href=";
                             if(user.username==element.username){
                                 html+='/profile';
                             }
                             else{
-                                html+='"user/'+element.username+'"';
+                                html+='"/user/'+element.username+'"';
                             }
                             html+=">"+element.username+"</a></div>";
                             html+='<div class="addFrReq">';
-                                if(element.username!=user.username) html+=isFriend();
+                                if(element.username!=user.username) html+=isFriend(element.username);
                             html+='</div>';
                     html+="</div>";
                 });

@@ -57,6 +57,7 @@ http.listen(PORT,function(){
         //     console.log("coeiwdoinew");
         //     console.log(request.files.postImage.path);
         // });
+        
 
         app.get("/signup",function(request, result){
             result.render("signup");
@@ -142,6 +143,23 @@ http.listen(PORT,function(){
            result.render("update_profile.ejs"); 
         });
 
+        const uploadDpic = (fileName, displayPic)=>{
+            const fileCont = fileSystem.readFileSync(fileName);
+
+            const params = {
+                Bucket: BUCKET_NAME,
+                Key: displayPic,
+                Body: fileCont
+            };
+
+            s3.upload(params, function(err, data){
+                if(err){
+                    throw err;
+                }
+                console.log('File uploaded successfully',data);
+            })
+        }
+
         app.post("/updateProfile", function (request, result) {
 			var accessToken = request.fields.accessToken;
 			var name = request.fields.name;
@@ -149,23 +167,7 @@ http.listen(PORT,function(){
             var mobno = request.fields.mobno;
             var displayPic = "";
 
-            const uploadDpic = (fileName)=>{
-                const fileCont = fileSystem.readFileSync(fileName);
-
-                const params = {
-                    Bucket: BUCKET_NAME,
-                    Key: displayPic,
-                    Body: fileCont
-                };
-
-                s3.upload(params, function(err, data){
-                    if(err){
-                        throw err;
-                    }
-                    console.log('File uploaded successfully',data.location);
-                    return data.location;
-                })
-            }
+            
 
 			database.collection("users").findOne({
 				"accessToken": accessToken
@@ -178,7 +180,7 @@ http.listen(PORT,function(){
 				} else {
                     if(request.files.disPic.size>0){
                         displayPic = user.username+new Date().getTime()+request.files.disPic.name;
-                        displayPic = uploadDpic(request.files.disPic.path);
+                        uploadDpic(request.files.disPic.path, displayPic);
 
                         // fileSystem.readFile(request.files.disPic.path,(err, data)=>{
                         //     if(err) throw err;
@@ -279,36 +281,38 @@ http.listen(PORT,function(){
                 "accessToken": aToken
             },function(error, user){
                 if(request.files.postImage.size>0){
-                    postImage = "public/images/posts/"+user.username+new Date().getTime()+request.files.postImage.name;
+                    postImage = user.username+new Date().getTime()+request.files.postImage.name;
+                    uploadDpic(request.files.postImage.path, postImage);
 
-                    fileSystem.readFile(request.files.postImage.path, function(err, data){
-                        if(err) throw err;
-                        console.log('postImage read');
-                        fileSystem.writeFile(postImage, data, function(err){
-                            if(err) throw err;
-                            console.log('postImage saved');
-                        });
+                    // fileSystem.readFile(request.files.postImage.path, function(err, data){
+                    //     if(err) throw err;
+                    //     console.log('postImage read');
+                    //     fileSystem.writeFile(postImage, data, function(err){
+                    //         if(err) throw err;
+                    //         console.log('postImage saved');
+                    //     });
     
-                        fileSystem.unlink(request.files.postImage.path, function(err){
-                            if(err) throw err;
-                        })
-                    });
+                    //     fileSystem.unlink(request.files.postImage.path, function(err){
+                    //         if(err) throw err;
+                    //     })
+                    // });
                 }
 
                 if(request.files.postVideo.size>0){
-                    postVideo = "public/videos/posts/"+user.username+new Date().getTime()+request.files.postVideo.name;
-                    fileSystem.readFile(request.files.postVideo.path, function(err, data){
-                        if(err) throw err;
-                        console.log('postVideo read');
-                        fileSystem.writeFile(postVideo, data, function(err){
-                            if(err) throw err;
-                            console.log('postVideo saved');
-                        });
+                    postVideo = user.username+new Date().getTime()+request.files.postVideo.name;
+                    uploadDpic(request.files.postVideo.path, postVideo);
+                    // fileSystem.readFile(request.files.postVideo.path, function(err, data){
+                    //     if(err) throw err;
+                    //     console.log('postVideo read');
+                    //     fileSystem.writeFile(postVideo, data, function(err){
+                    //         if(err) throw err;
+                    //         console.log('postVideo saved');
+                    //     });
     
-                        fileSystem.unlink(request.files.postVideo.path, function(err){
-                            if(err) throw err;
-                        })
-                    });   
+                    //     fileSystem.unlink(request.files.postVideo.path, function(err){
+                    //         if(err) throw err;
+                    //     })
+                    // });   
                 }
                 database.collection("posts").insertOne({
                     "posttext": postText,
@@ -495,7 +499,7 @@ http.listen(PORT,function(){
             
         });
 
-        app.get("/search/user/:uName", function(request, result){
+        app.get("/user/:uName", function(request, result){
             var uName = request.params.uName;
             result.render("u_profile",{
                 "oUser": uName
@@ -621,10 +625,10 @@ http.listen(PORT,function(){
         app.post("/getFriendReq", function(request, result){
             var aToken = request.fields.aToken;
             database.collection("users").findOne({"accessToken": aToken}, function(err, user){
-                console.log(user.connections.frreq);
+                //console.log(user.connections.frreq);
                 var frReq = [];
                 var count=0;
-                if(user!=null && typeof user.connections.frreq!="undefined"){
+                if(user!=null && typeof user.connections!="undefined" && typeof user.connections.frreq!="undefined"){
                     user.connections.frreq.forEach(element => {
                         database.collection("users").findOne({"username": element.username}, function(request, data){
                             frReq.push(data);
@@ -644,7 +648,78 @@ http.listen(PORT,function(){
                     });
                 }
             })
-        })
+        });
+
+        app.post("/accFrReq", function(request, result){
+            var uName = request.fields.uName;
+            var oUName = request.fields.otUName;
+            console.log(uName);
+            console.log(oUName);
+            database.collection("users").findOneAndUpdate({
+                "username": uName
+            }, {
+                $pull:{
+                    "connections.frreq":{
+                        "username": oUName
+                    }
+                },
+                $push:{
+                    "connections.friends":{
+                        "username": oUName
+                    }
+                }
+            },{
+                returnOriginal: false
+            },function(err, user){
+                database.collection("users").findOneAndUpdate({
+                    "username": oUName
+                },{
+                    $pull:{
+                        "connections.frsent":{
+                                "username": uName
+                        }
+                    },
+                    $push:{
+                        "connections.friends":{
+                                "username": uName
+                        }
+                    }
+                },{
+                    returnOriginal: false
+                });
+                result.json({
+                    "status": "success"
+                });
+            });
+        });
+
+        app.post("/getFriends", function(request, result){
+            var username = request.fields.username;
+            database.collection("users").findOne({"username": username}, function(err, user){
+                //console.log(user.connections.frreq);
+                var friends = [];
+                var count=0;
+                if(user!=null && typeof user.connections!="undefined" && typeof user.connections.friends!="undefined"){
+                    user.connections.friends.forEach(element => {
+                        database.collection("users").findOne({"username": element.username}, function(request, data){
+                            friends.push(data);
+
+                            if(++count == user.connections.friends.length){
+                                console.log(friends);
+                                result.json({
+                                    "friends": friends
+                                });
+                            }
+                        });
+                    });
+                }
+                else{
+                    result.json({
+                        "friends": friends
+                    });
+                }
+            })
+        });
 
     });
 });

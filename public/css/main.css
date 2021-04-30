@@ -172,7 +172,7 @@ width: 100%;
     font-size: 2em;
 }
 .postMedia img{
-    max-width: 100%;
+    width: 100%;
 }
 .postMedia video{
     max-width: 100%;
