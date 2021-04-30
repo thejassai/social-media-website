@@ -1,59 +1,70 @@
 <html>
-    <head>
-        <title>Social Network</title>
-        <link rel="stylesheet" href="/public/css/main.css">
-    </head>
-    <body>
-        <nav>
-            <div class ="logo">spaceBook</div>
-        </nav>
-        <div class="auth_div">
-            <h3>Login</h3>
-            <form method="POST" onsubmit="login(this);">
-            <div>
-                <label for="username">Username: </label>
-            <input type="text" name="username" id="uname">
-            </div>
-            <div>
-                <label for="password">Password: </label>
-            <input type="password" name="password" id="pword">
-            </div>
-            <div>
-                <input type="submit" name="login_btn" id="login_btn" value="login">
-                <input type="button" name="signup_btn" id="signup_btn" value="Signup">
-            </div>
-            </form>
+
+<head>
+    <title>Social Network</title>
+    <link rel="stylesheet" href="/public/css/login.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="logo navbar-brand ">spaceBook</div>
+
+    </nav>
+    <div class="auth_div registration-form">
+
+        <div class="form-icon">
+            <span><i class="icon icon-user"></i></span>
         </div>
-        <script>
-            function login(form){
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST","/login",true);
+        <form method="POST" onsubmit="login(this);">
+            <div class="form-group">
 
-                xhr.onreadystatechange = function(){
-                    if(this.readyState == 4 && this.status == 200){
-                        var response = JSON.parse(this.responseText);
+                <input type="text" class="form-control item" name="username" id="uname" placeholder="Username">
+            </div>
+            <div class="form-group">
 
-                        if(response.status == "success"){
-                            var accessToken = response.accessToken;
-                            localStorage.setItem("accessToken", accessToken);
-                            alert(response.message);
-                            window.location.href = "/";
-                        }
-                        else{
-                            window.location.href = "login";
-                            alert(response.message);
-                        }
+                <input type="password" class="form-control item" name="password" id="pword" placeholder="Password">
+            </div>
+            <div>
+                <input type="submit" class="btn btn-block create-account" name="login_btn" id="login_btn" value="login">
+                <input type="button" class="btn btn-block create-account" name="signup_btn" id="signup_btn"
+                    value="Signup">
+            </div>
+        </form>
+    </div>
+    <script>
+        function login(form) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/login", true);
 
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(this.responseText);
+
+                    if (response.status == "success") {
+                        var accessToken = response.accessToken;
+                        localStorage.setItem("accessToken", accessToken);
+                        alert(response.message);
+                        window.location.href = "profile";
+                    } else {
+                        window.location.href = "login";
+                        alert(response.message);
                     }
+
                 }
-
-                xhr.send(new FormData(form));
-                
-
             }
-            document.getElementById("signup_btn").addEventListener("click",function(){
-                window.location.href = "/signup";
-            });
-        </script>
-    </body>
+
+            xhr.send(new FormData(form));
+
+
+        }
+        document.getElementById("signup_btn").addEventListener("click", function () {
+            window.location.href = "/signup";
+        });
+    </script>
+</body>
+
 </html>
