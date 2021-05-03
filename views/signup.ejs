@@ -4,7 +4,7 @@
 
     <head>
         <title>Social Network</title>
-        <!-- <link rel="stylesheet" href="/public/css/login.css"> -->
+        <link rel="stylesheet" href="/public/css/login.css">
         <link rel="stylesheet" href="/public/css/main.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -76,15 +76,15 @@
     <script>
         function signUp(form) {
             //alert("hello");
-            form.signup_btn.setAttribute("disabled", "disabled");
-            form.signup_btn.innerHTML = "<span>Loading ....</span>";
+            // form.signup_btn.setAttribute("disabled", "disabled");
+            // form.signup_btn.innerHTML = "<span>Loading ....</span>";
 
             var xhr = new XMLHttpRequest();
-            
+            xhr.open("POST", "/signup", true);
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    form.signup_btn.removeAttribute("disabled");
-                    form.signup_btn.innerHTML = "<span>Signedup</span>";
+                    // form.signup_btn.removeAttribute("disabled");
+                    // form.signup_btn.innerHTML = "<span>Signedup</span>";
 
                     var response = JSON.parse(this.responseText);
                     alert(response.message);
@@ -94,7 +94,7 @@
                     }
                 }
             };
-            xhr.open("POST", "/signup", true);
+            
 
             xhr.send(new FormData(form));
         }

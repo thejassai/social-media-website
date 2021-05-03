@@ -81,15 +81,17 @@ http.listen(PORT,function(){
                         "gender": gender,
                         "mobno": mobno
                     },function(error, data){ 
-                        console.log(data);
-                        result.json({
-                            "status": "success",
-                            "message": "Signup successful.",
-                            "accessToken": "set"
-                        });
+                        // console.log("signedup");
+                        result.render("login");
+                        // result.json({
+                        //     "status": "success",
+                        //     "message": "Signup successful.",
+                        //     "accessToken": "set"
+                        // });
                     });
                 }
                 else{
+                    console.log("nooooo");
                     result.json({
                         "status":"error",
                         "message": "username already exist"

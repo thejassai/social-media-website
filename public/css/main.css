@@ -63,7 +63,10 @@ width: 100%;
     margin: 15px;
 
 }
-
+.radio{
+    margin-left: 0 !important;
+    text-align: left;
+}
 
 .coverPic {
     height: 200px;
