@@ -82,12 +82,12 @@ http.listen(PORT,function(){
                         "mobno": mobno
                     },function(error, data){ 
                         // console.log("signedup");
-                        result.render("login");
-                        // result.json({
-                        //     "status": "success",
-                        //     "message": "Signup successful.",
-                        //     "accessToken": "set"
-                        // });
+                        // result.render("login");
+                        result.json({
+                            "status": "success",
+                            "message": "Signup successful.",
+                            "accessToken": "set"
+                        });
                     });
                 }
                 else{
