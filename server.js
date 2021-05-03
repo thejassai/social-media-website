@@ -81,9 +81,10 @@ http.listen(PORT,function(){
                         "gender": gender,
                         "mobno": mobno
                     },function(error, data){ 
+                        console.log(data);
                         result.json({
                             "status": "success",
-                            "message": "Sigup successful.",
+                            "message": "Signup successful.",
                             "accessToken": "set"
                         });
                     });

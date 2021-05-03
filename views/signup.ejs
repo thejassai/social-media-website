@@ -4,7 +4,7 @@
 
     <head>
         <title>Social Network</title>
-        <link rel="stylesheet" href="/public/css/login.css">
+        <!-- <link rel="stylesheet" href="/public/css/login.css"> -->
         <link rel="stylesheet" href="/public/css/main.css">
         <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
@@ -28,26 +28,26 @@
                 <span><i class="icon icon-user"></i></span>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control item" name="username" id="uname" placeholder="Username">
+                <input type="text" class="form-control item" required name="username" id="uname" placeholder="Username">
             </div>
             <div class="form-group">
 
-                <input type="password" class="form-control item" name="password" id="pword" placeholder="Password">
+                <input type="password" class="form-control item" required name="password" id="pword" placeholder="Password">
             </div>
             <div class="form-group">
 
-                <input type="text" class="form-control item" required name="name" placeholder="Full Name" />
+                <input type="text" class="form-control item"  name="name" placeholder="Full Name" />
 
             </div>
             <div class="form-group">
 
-                <input type="email" class="form-control item" required name="email" placeholder="Email"
+                <input type="email" class="form-control item"  name="email" placeholder="Email"
                     placeholder="Email" />
 
             </div>
             <div class="form-group">
 
-                <input type="mobno" class="form-control item" required name="mobno" placeholder="Phone Number" />
+                <input type="mobno" class="form-control item"  name="mobno" placeholder="Phone Number" />
 
             </div>
             <div class="form-group">
@@ -80,8 +80,7 @@
             form.signup_btn.innerHTML = "<span>Loading ....</span>";
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/signup", true);
-
+            
             xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     form.signup_btn.removeAttribute("disabled");
@@ -95,6 +94,7 @@
                     }
                 }
             };
+            xhr.open("POST", "/signup", true);
 
             xhr.send(new FormData(form));
         }
