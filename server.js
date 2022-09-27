@@ -25,8 +25,8 @@ app.use("/public",express.static(__dirname+"/public"));
 app.set("view engine","ejs");
 
 const aws =  require('aws-sdk');
-const ID = 'AKIAZ2NZM347ZC2KAFNQ';
-const SECRET = '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';
+const ID = 'AKIAZ2NZM347XMXX6TEF';
+const SECRET = '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';
 const BUCKET_NAME = 'spacebook-bucket';
 const s3 = new aws.S3({
     accessKeyId: ID,
