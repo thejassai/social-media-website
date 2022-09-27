@@ -47,7 +47,7 @@ var upload = multer({dest:''});
 http.listen(PORT,function(){
     console.log("Server started at port 3000");
 
-    mongoClient.connect("mongodb+srv://user1:qwerty123@cluster0.ws1pj.mongodb.net/",function(error,client){
+    mongoClient.connect("mongodb+srv://qwerty:qwerty123@cluster0.qtlm3.mongodb.net/",function(error,client){
         var database = client.db("social_media_network");
         console.log("Database connected");
 
